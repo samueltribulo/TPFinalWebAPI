@@ -70,6 +70,32 @@ namespace SWAdventureWorks_Tribulo.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        public ActionResult<Department> Update(int id, [FromBody] Department department)
+        {
+
+            if (id != department.DepartmentId) return BadRequest();
+
+            context.Entry(department).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<Department> Delete(int id)
+        {
+
+            var department = context.Departments.SingleOrDefault(d => d.DepartmentId == id);
+
+            if (department == null) return NotFound();
+
+            context.Departments.Remove(department);
+            context.SaveChanges();
+
+            return NoContent();
+
+        }
 
     }
 }
